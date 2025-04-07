@@ -8,8 +8,8 @@ public class App {
     public void start(){
         startMessage();
         myFlashcard = readFlashcard(pickFlashcard());
-
-        doFlashcards();
+        int mode = chooseMode();
+        doFlashcards(mode);
     }
 
     public void startMessage(){
@@ -52,24 +52,48 @@ public class App {
     }
  
     public int chooseMode(){
-        int n = 0;
         printer.output("Select a mode of study");
         printer.output("(Please type the mode of the subject as listed below)");
         printer.output("1. Guess word"); 
         printer.output("2. Guess definition"); 
         printer.output("3. Mix");
-        String answer = printer.input();
-        if (answer.equals("Guess word")){
-            
+        printer.output("");
+        String answer = printer.input().toLowerCase();
+        printer.output("");
+        if (answer.equals("guess word")){
+            return 1;
+        } else if (answer.equals("guess definition")){
+            return 2;
+        } else if (answer.equals("mix")){
+            return 3;
+        } else{
+            return -1;
         }
-        return n;
     }
 
-    public void doFlashcards(){
-        for (int i = 0; i < myFlashcard.getNumDefinitions(); i++){
-            printer.output(myFlashcard.getDefinition(i));
+    public void doFlashcards(int mode){
+        myFlashcard.shuffleDeck();
+        if (mode == -1){
+            printer.output("Please select a valid mode");
+        } else if (mode == 1)
+            for (int i = 0; i < myFlashcard.getNumDefinitions(); i++){
+                printer.output(myFlashcard.getDefinition(i));
+                printer.output("Please press ENTER to reveal the word");
+                printer.input();
+                printer.output(myFlashcard.getWord(i));
+                printer.output("");
+        } else if (mode == 2){
+            for (int i = 0; i < myFlashcard.getNumWords(); i++){
+                printer.output(myFlashcard.getWord(i));
+                printer.output("Please press ENTER to reveal the definition");
+                printer.input();
+                printer.output(myFlashcard.getDefinition(i));
+                printer.output("");
+            }
         }
     }
+
+
     public static void main(String[] args) throws Exception {
        new App().start();
     }

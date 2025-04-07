@@ -15,6 +15,19 @@ public class Deck {
         numDefinitions++;
     }
 
+    public void shuffleDeck(){
+        int n = numWords;
+        for (int i = n-1; i>1 ; i--){
+            int j = (int)(Math.random()*(i+1));
+            String s = words[i];
+            words[i] = words[j];
+            words[j] = s;
+            String p = definitions[i];
+            definitions[i] = definitions[j];
+            definitions[j] = p;
+        }
+    }
+
     public int getNumWords(){
         return numWords;
     }
