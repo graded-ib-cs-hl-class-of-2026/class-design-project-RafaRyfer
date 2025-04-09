@@ -39,7 +39,13 @@ public class Printer {
     }
 
     public String input(){
-        return in.nextLine();
+        String m = in.nextLine();
+        if (m.toLowerCase().equals("end study")){
+            output("Thanks for using Flashcards!");
+            output("Thanks for using Flashcards!");
+            System.exit(0);
+        }
+        return m;
     }
 
 }
