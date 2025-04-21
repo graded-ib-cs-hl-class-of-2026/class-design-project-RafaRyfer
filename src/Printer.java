@@ -41,7 +41,7 @@ public class Printer {
     public String input(){
         String m = in.nextLine();
         if (m.toLowerCase().equals("end study")){
-            output("Thanks for using Flashcards!");
+            output("");
             output("Thanks for using Flashcards!");
             System.exit(0);
         }
