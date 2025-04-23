@@ -3,7 +3,7 @@ public class App {
     private Printer printer = new Printer();
 
     /**
-     * Where the program begins
+     * Runs all the methods to run the program.
      */
     public void start() {
         boolean replay = true;
@@ -18,7 +18,10 @@ public class App {
             replay = replay();
         }
     }
-
+    
+    /**
+     * Prints out the start message.
+     */
     public void startMessage() {
         printer.output("");
         printer.output("Welcome to Flash Cards!");
@@ -26,16 +29,28 @@ public class App {
         printer.output("If at any point you want to end your study session, please type “End study”");
         printer.output("");
         printer.output("Please pick a subject to study");
-        printer.output("(Please type the name of the subject as listed below)");
-        printer.output("1. Econ");
-        printer.output("2. Bio");
+        printer.output("(Please type the name of the text file)");
     }
 
+    /**
+     * Saves the user input into a string that holds the file name 
+     * of the deck the user wants to use. If the input does not 
+     * include ".txt", the method adds it.
+     * @return user input as a string
+     */
     public String pickFlashcard() {
-        String m = printer.input().toLowerCase() + ".txt";
-        return m;
+        String m = printer.input().toLowerCase();
+        if (m.indexOf(".txt") == -1){
+            return m + ".txt";
+        } else return m;
     }
 
+    /**
+     * Takes in the string from pickFlashcard() as a parameter and opens the matching file.
+     * 
+     * @param filename - name of the file
+     * @return Deck object according to the corresponding file
+     */
     public Deck readFlashcard(String filename) {
         Deck m = new Deck();
         String card = "";
@@ -61,10 +76,14 @@ public class App {
         return m;
     }
 
+    /**
+     * Allows the user to choose the mode of study.
+     * @return int from 1-3 which corresponds to a mode of study.
+     */
     public int chooseMode() {
         printer.output("");
         printer.output("Select a mode of study");
-        printer.output("(Please type the mode of the subject as listed below)");
+        printer.output("(Please type the mode study as listed below)");
         printer.output("1. Guess word");
         printer.output("2. Guess definition");
         printer.output("3. Mix");
@@ -82,15 +101,18 @@ public class App {
         }
     }
 
+    /**
+     * Depending on the mode selected, this method will present to the user: definitions, words, or a mix of both.
+     */
     public void doFlashcards() {
         myFlashcard.shuffleDeck();
         int mode = chooseMode();
-        while (mode == -1) {
+        while (mode == -1) { //catches the error for if the user selects a mode which doesn't exist
             printer.output("Please select a valid mode");
             mode = chooseMode();
         }  
         if (mode == 1){
-            for (int i = 0; i < myFlashcard.getNumDefinitions(); i++) {
+            for (int i = 0; i < myFlashcard.getNumDefinitions(); i++) { // presents the definition THEN the corresponding word
                 printer.output(myFlashcard.getDefinition(i));
                 printer.output("Please press ENTER to reveal the word");
                 printer.input();
@@ -98,7 +120,7 @@ public class App {
                 printer.output("");
             }
         } else if (mode == 2) {
-            for (int i = 0; i < myFlashcard.getNumWords(); i++) {
+            for (int i = 0; i < myFlashcard.getNumWords(); i++) { // presents the word THEN the corresponding defintion
                 printer.output(myFlashcard.getWord(i));
                 printer.output("Please press ENTER to reveal the definition");
                 printer.input();
@@ -106,7 +128,7 @@ public class App {
                 printer.output("");
             }
         } else if (mode == 3){
-            for (int i = 0; i < myFlashcard.getNumWords(); i++) {
+            for (int i = 0; i < myFlashcard.getNumWords(); i++) { // randomly shows the word or definition
                 int random = (int)(Math.random()*2);
                 if (random == 0){
                     printer.output(myFlashcard.getWord(i));
@@ -126,6 +148,10 @@ public class App {
 
     }
 
+    /**
+     * Allows the user to restart the program and play again.
+     * @return boolean stating if the user wants to restart the program.
+     */
     public boolean replay(){
         boolean valid = false;
         while (!valid){
