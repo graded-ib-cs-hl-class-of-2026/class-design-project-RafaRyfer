@@ -1,0 +1,5 @@
+Cell - The basic unit of life in all living organisms.
+DNA - A molecule that carries genetic information used for growth, development, and reproduction.
+Photosynthesis - The process by which plants use sunlight to convert carbon dioxide and water into energy (glucose) and oxygen.
+Mitochondria - Organelles known as the "powerhouse of the cell" because they generate energy (ATP) through cellular respiration.
+Osmosis - The movement of water molecules across a semi-permeable membrane from an area of lower solute concentration to higher solute concentration.
