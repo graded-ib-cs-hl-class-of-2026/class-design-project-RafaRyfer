@@ -26,7 +26,15 @@ public class Printer {
         fileInput = null;
     }
 
-
+    public void writeToFile(String content) {
+        try (FileWriter writer = new FileWriter("subjectsStudied.txt", true)) {
+            writer.write(content + System.lineSeparator());
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * Checks if the text file has a next line.
      * @return boolean stating if the file has a next line

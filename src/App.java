@@ -9,16 +9,16 @@ public class App {
         boolean replay = true;
         while (replay){
             startMessage();
-            boolean read = false;
-            while (!read){
+            boolean fileExists = false; 
+            while (!fileExists){ //creates a loop until the user chooses an existing file
                 myFlashcard = readFlashcard(pickFlashcard());
-                if (myFlashcard.getNumWords() > 0) read = true;
+                if (myFlashcard != null) fileExists = true;
             }
             doFlashcards();
             replay = replay();
         }
     }
-    
+
     /**
      * Prints out the start message.
      */
@@ -41,8 +41,12 @@ public class App {
     public String pickFlashcard() {
         String m = printer.input().toLowerCase();
         if (m.indexOf(".txt") == -1){
-            return m + ".txt";
-        } else return m;
+            String a = m + ".txt";
+            printer.writeToFile("Student studied: " + a);
+            return a;
+        } else
+            printer.writeToFile("Student studied: " + m);
+            return m;
     }
 
     /**
@@ -68,8 +72,8 @@ public class App {
                 }
             } catch (Exception e) {
                 printer.output("");
-                printer.output(e.toString());
                 printer.output("Please try again - file did not exist");
+                return null;
 
             }
 
@@ -101,6 +105,45 @@ public class App {
         }
     }
 
+    public void doGuessWord(){
+        for (int i = 0; i < myFlashcard.getNumDefinitions(); i++) { // presents the definition THEN the corresponding word
+            printer.output(myFlashcard.getDefinition(i));
+            printer.output("Please press ENTER to reveal the word");
+            printer.input();
+            printer.output(myFlashcard.getWord(i));
+            printer.output("");
+        }
+    }
+
+    public void doGuessDefinition(){
+        for (int i = 0; i < myFlashcard.getNumWords(); i++) { // presents the word THEN the corresponding defintion
+            printer.output(myFlashcard.getWord(i));
+            printer.output("Please press ENTER to reveal the definition");
+            printer.input();
+            printer.output(myFlashcard.getDefinition(i));
+            printer.output("");
+        }
+    }
+
+    public void doMix(){
+        for (int i = 0; i < myFlashcard.getNumWords(); i++) { // randomly shows the word or definition
+            int random = (int)(Math.random()*2);
+            if (random == 0){
+                printer.output(myFlashcard.getWord(i));
+                printer.output("Please press ENTER to reveal the definition");
+                printer.input();
+                printer.output(myFlashcard.getDefinition(i));
+                printer.output("");
+            } else if (random == 1){
+                printer.output(myFlashcard.getDefinition(i));
+                printer.output("Please press ENTER to reveal the word");
+                printer.input();
+                printer.output(myFlashcard.getWord(i));
+                printer.output("");
+            }
+        }
+    }
+
     /**
      * Depending on the mode selected, this method will present to the user: definitions, words, or a mix of both.
      */
@@ -112,38 +155,11 @@ public class App {
             mode = chooseMode();
         }  
         if (mode == 1){
-            for (int i = 0; i < myFlashcard.getNumDefinitions(); i++) { // presents the definition THEN the corresponding word
-                printer.output(myFlashcard.getDefinition(i));
-                printer.output("Please press ENTER to reveal the word");
-                printer.input();
-                printer.output(myFlashcard.getWord(i));
-                printer.output("");
-            }
+            doGuessWord();
         } else if (mode == 2) {
-            for (int i = 0; i < myFlashcard.getNumWords(); i++) { // presents the word THEN the corresponding defintion
-                printer.output(myFlashcard.getWord(i));
-                printer.output("Please press ENTER to reveal the definition");
-                printer.input();
-                printer.output(myFlashcard.getDefinition(i));
-                printer.output("");
-            }
+            doGuessDefinition();
         } else if (mode == 3){
-            for (int i = 0; i < myFlashcard.getNumWords(); i++) { // randomly shows the word or definition
-                int random = (int)(Math.random()*2);
-                if (random == 0){
-                    printer.output(myFlashcard.getWord(i));
-                    printer.output("Please press ENTER to reveal the definition");
-                    printer.input();
-                    printer.output(myFlashcard.getDefinition(i));
-                    printer.output("");
-                } else if (random == 1){
-                    printer.output(myFlashcard.getDefinition(i));
-                    printer.output("Please press ENTER to reveal the word");
-                    printer.input();
-                    printer.output(myFlashcard.getWord(i));
-                    printer.output("");
-                }
-            }
+            doMix();
         }
 
     }
@@ -153,27 +169,22 @@ public class App {
      * @return boolean stating if the user wants to restart the program.
      */
     public boolean replay(){
-        boolean valid = false;
-        while (!valid){
+        while (true){
             printer.output("");
             printer.output("Would you like to play again?");
             printer.output("(Please type \"Yes\" or \"No\")");
             String replay = printer.input();
             if (replay.toLowerCase().equals("yes")){
-                valid = true;
                 return true;
             } else if (replay.toLowerCase().equals("no")){
                 printer.output("");
                 printer.output("Thanks for using Flashcards!");
-                valid = true;
                 return false;
             } else {
                 printer.output("");
                 printer.output("Answer not valid");
-                valid = false;
             }
         }
-        return false;
     }
 
     public static void main(String[] args) throws Exception {
